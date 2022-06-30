@@ -1,0 +1,12 @@
+{
+  "jsc": {
+    "parser": {
+      "target": "es2019",
+      "syntax": "typescript",
+      "tsx": false
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+}
