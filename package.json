@@ -1,8 +1,8 @@
 {
   "name": "tranquilo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.2",
+  "description": "Open-Source Static Site Manager",
+  "main": "src/index.ts",
   "scripts": {
     "build": "swc ./src -d ./dist/",
     "dev:build": "swc -w ./src -d ./dist/",
@@ -10,9 +10,13 @@
     "dev": "run-p dev:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "web",
+    "jamstack",
+    "static site"
+  ],
+  "author": "Migsar Navarro <migsar.navarro@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.206",
