@@ -10,6 +10,8 @@ A static sites manager (SSM) deals with the ever growing complexity of web sites
 
 This project was catalyzed by the [Hashnode](https://hashnode.com/)'s Build with [Linode](https://www.linode.com/?utm_source=hashnode&utm_medium=article&utm_campaign=hackathon_announcement) Hackathon.
 
+You can find the post describing the creation process [here](https://engineering.migsar.com/tranquilo).
+
 -----
 
 ## Installation

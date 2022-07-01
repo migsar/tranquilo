@@ -7,10 +7,30 @@ enum Errors {
   SITES_PATH_NOT_DEFINED = 'Unable to read sites content.',
 }
 
+type ProcessUrlResult = {
+  isRoot: boolean,
+  subdomain: string,
+  isValid: boolean
+};
+
+function processUrl(hostname: string, canonicalDomain: string): ProcessUrlResult {
+  const domainRegEx = new RegExp(`(.*?)\\.?${canonicalDomain}$`);
+  const matchResult = hostname.match(domainRegEx);
+  const isValid = matchResult !== null;
+  const [ isRoot, subdomain] = isValid ? [matchResult[1] === '', matchResult[1]] : [false, ''];
+
+  return {
+    isValid,
+    isRoot,
+    subdomain,
+  };
+};
+
 export async function rootRouteHandlerFactory() {
   const {
+    CANONICAL_DOMAIN: canonicalDomain,
     API_ENDPOINT: apiUrl,
-    SITES_PATH: sitesPath
+    SITES_PATH: sitesPath,
   } = process.env;
 
   return async function rootRouteHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -24,11 +44,9 @@ export async function rootRouteHandlerFactory() {
       }
 
       const { hostname, url } = request;
-      const [fullDomain] = hostname.split(':');
-      const [subdomain] = fullDomain.split('.');
+      const { isRoot, subdomain } = processUrl(hostname, canonicalDomain || '');
 
-      if (fullDomain === subdomain) {
-        console.log('Boo')
+      if (isRoot) {
         return reply.sendFile('index.html')
       }
 
@@ -43,7 +61,11 @@ export async function rootRouteHandlerFactory() {
         site: subdomain
       };
 
-      const { sites: queryResponse } = await reqGql(apiUrl, query, variables);
+      const { sites: queryResponse } = await reqGql({
+        url: apiUrl,
+        document: query,
+        variables
+      });
 
       if (queryResponse.length < 1) {
         return reply.sendFile('404.html')
